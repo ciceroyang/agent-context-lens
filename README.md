@@ -180,7 +180,7 @@ opens recognized agent-context and MCP configuration files:
 
 | Surface | Recognized paths |
 |---|---|
-| Repository instructions | `AGENTS.override.md`, `AGENTS.md`, nested variants, `CLAUDE.md` |
+| Repository instructions | `AGENTS.md`, nested `AGENTS.md`, `CLAUDE.md` |
 | Editor agents | `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` |
 | Copilot | `.github/copilot-instructions.md` |
 | Portable skills | nested `SKILL.md` files |

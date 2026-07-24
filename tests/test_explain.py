@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from agent_context_lens import discovery as discovery_module
 from agent_context_lens.config_snapshot import (
     ConfigLayer,
     ExplainConfig,
@@ -83,6 +84,38 @@ def source_map(report):
 def write(path: Path, data: bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
+
+
+def install_swap_before_open(
+    monkeypatch, candidate: Path, external_target: Path
+):
+    original_open = discovery_module.os.open
+    original_read = discovery_module.os.read
+    target_metadata = external_target.stat()
+    swapped = []
+    external_reads = []
+    observed_flags = []
+
+    def swapping_open(path, flags, mode=0o777, *, dir_fd=None):
+        if Path(path) == candidate and not swapped:
+            candidate.unlink()
+            candidate.symlink_to(external_target)
+            swapped.append(True)
+            observed_flags.append(flags)
+        return original_open(path, flags, mode, dir_fd=dir_fd)
+
+    def observed_read(descriptor, size):
+        metadata = os.fstat(descriptor)
+        if (metadata.st_dev, metadata.st_ino) == (
+            target_metadata.st_dev,
+            target_metadata.st_ino,
+        ):
+            external_reads.append(size)
+        return original_read(descriptor, size)
+
+    monkeypatch.setattr(discovery_module.os, "open", swapping_open)
+    monkeypatch.setattr(discovery_module.os, "read", observed_read)
+    return swapped, external_reads, observed_flags
 
 
 def test_root_01_explicit_root_single_agents(tmp_path):
@@ -732,6 +765,86 @@ def test_sym_05_symlinked_codex_home_is_refused(tmp_path):
     assert user_scope.reason_codes == ("path_symlink_unsupported",)
 
 
+def test_mf_02_project_swap_to_external_symlink_is_not_read(
+    tmp_path, monkeypatch
+):
+    root = tmp_path / "repo"
+    candidate = root / "AGENTS.md"
+    external_target = tmp_path / "external-secret.md"
+    write(candidate, b"original project source")
+    write(external_target, b"external sentinel")
+    external_hash = hashlib.sha256(b"external sentinel").hexdigest()
+    swapped, external_reads, observed_flags = install_swap_before_open(
+        monkeypatch, candidate, external_target
+    )
+
+    report = explain_codex(
+        root, cwd=root, config=resolved_config(root)
+    )
+
+    source = source_map(report)["AGENTS.md"]
+    assert swapped == [True]
+    assert observed_flags[0] & os.O_NOFOLLOW
+    assert external_reads == []
+    assert source.state == "unsupported"
+    assert source.reason_codes == ("unsupported_symlink",)
+    assert source.sha256_source is None
+    assert "safe_mode_parity_divergence" in {
+        item.code for item in report.limitations
+    }
+    for rendered in (
+        report.to_json(),
+        report.to_terminal(),
+        report.to_markdown(),
+    ):
+        assert external_hash not in rendered
+
+
+def test_mf_02_user_swap_to_external_symlink_is_not_read(
+    tmp_path, monkeypatch
+):
+    root = tmp_path / "repo"
+    home = tmp_path / "codex-home"
+    candidate = home / "AGENTS.override.md"
+    external_target = tmp_path / "external-user-secret.md"
+    root.mkdir()
+    write(candidate, b"original user source")
+    write(external_target, b"external user sentinel")
+    external_hash = hashlib.sha256(b"external user sentinel").hexdigest()
+    swapped, external_reads, observed_flags = install_swap_before_open(
+        monkeypatch, candidate, external_target
+    )
+
+    report = explain_codex(
+        root,
+        cwd=root,
+        config=resolved_config(root),
+        include_user=True,
+        codex_home=home,
+    )
+
+    source = source_map(report)["$CODEX_HOME/AGENTS.override.md"]
+    user_scope = next(
+        item for item in report.instruction_scopes if item.scope == "user"
+    )
+    assert swapped == [True]
+    assert observed_flags[0] & os.O_NOFOLLOW
+    assert external_reads == []
+    assert user_scope.status == "unsupported"
+    assert source.state == "unsupported"
+    assert source.reason_codes == ("unsupported_symlink",)
+    assert source.sha256_source is None
+    assert "safe_mode_parity_divergence" in {
+        item.code for item in report.limitations
+    }
+    for rendered in (
+        report.to_json(),
+        report.to_terminal(),
+        report.to_markdown(),
+    ):
+        assert external_hash not in rendered
+
+
 def test_cfg_06_direct_flags_override_snapshot(tmp_path):
     snapshot = tmp_path / "snapshot.json"
     snapshot.write_text(
@@ -1007,6 +1120,47 @@ def test_ver_03_profile_platform_mismatch_is_unknown(tmp_path):
     assert "platform_not_validated" in {
         item.code for item in report.limitations
     }
+
+
+@pytest.mark.parametrize("platform", ["windows-x64", "linux-x64"])
+def test_mf_01_official_contract_unvalidated_platform_is_visible(
+    tmp_path, platform
+):
+    config = resolved_config(tmp_path, platform=platform)
+
+    report = explain_codex(tmp_path, cwd=tmp_path, config=config)
+
+    assert report.resolution_status == "resolved_with_limitations"
+    assert "platform_not_validated" in {
+        item.code for item in report.limitations
+    }
+    for rendered in (
+        report.to_json(),
+        report.to_terminal(),
+        report.to_markdown(),
+    ):
+        assert "platform_not_validated" in rendered
+
+
+def test_mf_01_official_contract_validated_darwin_has_no_platform_limit(
+    tmp_path,
+):
+    report = explain_codex(
+        tmp_path,
+        cwd=tmp_path,
+        config=resolved_config(tmp_path, platform="darwin-arm64"),
+    )
+
+    assert report.resolution_status == "resolved"
+    assert "platform_not_validated" not in {
+        item.code for item in report.limitations
+    }
+    for rendered in (
+        report.to_json(),
+        report.to_terminal(),
+        report.to_markdown(),
+    ):
+        assert "platform_not_validated" not in rendered
 
 
 @pytest.mark.parametrize(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import errno
 import os
 import stat
 from dataclasses import dataclass
@@ -16,6 +17,14 @@ class CandidateFact:
     is_symlink: bool
     is_regular_file: bool
     source_bytes: int | None
+    device: int
+    inode: int
+
+
+class CandidateReadError(Exception):
+    def __init__(self, reason_code: str, message: str) -> None:
+        super().__init__(message)
+        self.reason_code = reason_code
 
 
 def absolute_lexical(path: str | Path, *, base: Path | None = None) -> Path:
@@ -116,10 +125,61 @@ def inspect_candidate(
         is_symlink=is_symlink,
         is_regular_file=is_regular,
         source_bytes=metadata.st_size if is_regular else None,
+        device=metadata.st_dev,
+        inode=metadata.st_ino,
     )
 
 
 def read_regular_candidate(fact: CandidateFact) -> bytes:
     if fact.is_symlink or not fact.is_regular_file:
-        raise ValueError(f"candidate is not a safe regular file: {fact.path}")
-    return fact.path.read_bytes()
+        raise CandidateReadError(
+            "unsupported_symlink" if fact.is_symlink else "unsupported_file_type",
+            f"candidate is not a safe regular file: {fact.path}",
+        )
+
+    no_follow = getattr(os, "O_NOFOLLOW", None)
+    if no_follow is None:
+        raise CandidateReadError(
+            "safe_no_follow_unavailable",
+            "this platform has no no-follow file-open primitive",
+        )
+
+    flags = os.O_RDONLY | no_follow
+    close_on_exec = getattr(os, "O_CLOEXEC", 0)
+    flags |= close_on_exec
+    try:
+        descriptor = os.open(fact.path, flags)
+    except OSError as error:
+        if error.errno == errno.ELOOP:
+            reason_code = "unsupported_symlink"
+        elif error.errno == errno.ENOENT:
+            reason_code = "candidate_changed_during_read"
+        else:
+            reason_code = "candidate_open_failed"
+        raise CandidateReadError(reason_code, str(error)) from error
+
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise CandidateReadError(
+                "unsupported_file_type",
+                "opened candidate is not a regular file",
+            )
+        if (metadata.st_dev, metadata.st_ino) != (fact.device, fact.inode):
+            raise CandidateReadError(
+                "candidate_changed_during_read",
+                "candidate identity changed between inspection and open",
+            )
+
+        chunks: list[bytes] = []
+        while True:
+            chunk = os.read(descriptor, 64 * 1024)
+            if not chunk:
+                return b"".join(chunks)
+            chunks.append(chunk)
+    except CandidateReadError:
+        raise
+    except OSError as error:
+        raise CandidateReadError("candidate_read_failed", str(error)) from error
+    finally:
+        os.close(descriptor)
