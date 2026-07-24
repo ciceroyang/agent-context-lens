@@ -157,11 +157,12 @@ class Report:
         warnings = sum(
             finding.severity == "warning" for finding in self.findings
         )
+        file_label = "file" if len(self.files) == 1 else "files"
         lines = [
             "Agent Context Lens",
             f"Score: {self.score}/100",
             (
-                f"Context: {len(self.files)} files · "
+                f"Context: {len(self.files)} {file_label} · "
                 f"~{self.total_approx_tokens:,} tokens · "
                 f"{self.duplicate_line_ratio:.0%} duplicate instruction lines"
             ),
@@ -424,4 +425,3 @@ def scan(root: str | Path = ".") -> Report:
         total_approx_tokens=total_tokens,
         duplicate_line_ratio=duplicate_ratio,
     )
-
