@@ -8,6 +8,7 @@ from typing import Iterable
 
 from ..config_snapshot import ExplainConfig
 from ..discovery import (
+    CandidateReadError,
     CandidateFact,
     absolute_lexical,
     find_root_candidates,
@@ -38,6 +39,7 @@ EXACT_PROFILES = {
         "darwin-arm64",
     ),
 }
+VALIDATED_OFFICIAL_PLATFORMS = frozenset({"darwin-arm64"})
 IGNORED_DISCOVERY_DIRECTORIES = {
     ".git",
     ".hg",
@@ -352,6 +354,12 @@ def _is_exact_profile(
     config: ExplainConfig, limitations: _Limitations
 ) -> bool:
     if config.behavior_profile == "official-contract":
+        if config.platform not in VALIDATED_OFFICIAL_PLATFORMS:
+            limitations.add(
+                "platform_not_validated",
+                "The declared platform has no accepted resolver and "
+                "safe-filesystem evidence.",
+            )
         return False
     expected = EXACT_PROFILES.get(config.behavior_profile)
     if expected is None:
@@ -488,7 +496,7 @@ def _select_project_directory(
     pending = [_pending_from_fact(fact, "project", root) for fact in facts]
     highest = pending[0]
     if highest.record.state == "unsupported":
-        _add_symlink_limitations(highest.record, limitations)
+        _add_source_safety_limitations(highest.record, limitations)
         return tuple(
             [
                 highest,
@@ -660,7 +668,29 @@ def _pending_from_fact(
         )
         return _PendingSource(record, None)
 
-    data = read_regular_candidate(fact)
+    try:
+        data = read_regular_candidate(fact)
+    except CandidateReadError as error:
+        record = SourceRecord(
+            source_id=source_id,
+            display_path=fact.display_path,
+            scope=scope,
+            directory=fact.directory if scope == "project" else None,
+            candidate_kind=fact.candidate_kind,
+            order=None,
+            state="unsupported",
+            reason_codes=(error.reason_code,),
+            evidence_class="unknown",
+            source_bytes=None,
+            loaded_bytes=None,
+            rendered_utf8_bytes=None,
+            separator_bytes_before=None,
+            partial=None,
+            sha256_source=None,
+            sha256_loaded=None,
+            encoding_status="not_read",
+        )
+        return _PendingSource(record, None)
     record = SourceRecord(
         source_id=source_id,
         display_path=fact.display_path,
@@ -875,7 +905,7 @@ def _resolve_user_scope(
 
     for index, item in enumerate(pending):
         if item.record.state == "unsupported":
-            _add_symlink_limitations(item.record, limitations)
+            _add_source_safety_limitations(item.record, limitations)
             return (
                 InstructionScope(
                     "user",
@@ -1031,13 +1061,34 @@ def _unsupported_report(
     )
 
 
-def _add_symlink_limitations(
+def _add_source_safety_limitations(
     record: SourceRecord, limitations: _Limitations
 ) -> None:
     code = record.reason_codes[0]
+    messages = {
+        "broken_symlink": "A broken instruction-file symlink is refused.",
+        "unsupported_symlink": (
+            "An instruction-file symlink is refused in safe mode."
+        ),
+        "unsupported_file_type": (
+            "A non-regular instruction source is refused in safe mode."
+        ),
+        "safe_no_follow_unavailable": (
+            "The platform cannot guarantee a no-follow source open."
+        ),
+        "candidate_changed_during_read": (
+            "The instruction source changed between inspection and open."
+        ),
+        "candidate_open_failed": (
+            "The instruction source could not be opened safely."
+        ),
+        "candidate_read_failed": (
+            "The opened instruction source could not be read safely."
+        ),
+    }
     limitations.add(
         code,
-        "An instruction-file symlink is refused in safe mode.",
+        messages.get(code, "The instruction source is refused in safe mode."),
         record.source_id,
     )
     limitations.add(

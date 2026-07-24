@@ -25,7 +25,6 @@ IGNORED_DIRECTORIES = {
 }
 
 ROOT_INSTRUCTION_FILES = {
-    "AGENTS.override.md",
     "AGENTS.md",
     "CLAUDE.md",
     ".github/copilot-instructions.md",
@@ -185,11 +184,7 @@ def _category(relative_path: str) -> str | None:
         return "mcp"
     if relative_path in ROOT_INSTRUCTION_FILES:
         return "instructions"
-    if (
-        relative_path.endswith("/AGENTS.override.md")
-        or relative_path.endswith("/AGENTS.md")
-        or relative_path.endswith("/CLAUDE.md")
-    ):
+    if relative_path.endswith("/AGENTS.md") or relative_path.endswith("/CLAUDE.md"):
         return "instructions"
     if relative_path.endswith("/SKILL.md") or relative_path == "SKILL.md":
         return "skill"

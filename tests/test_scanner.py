@@ -91,7 +91,7 @@ def test_fail_under_returns_two(tmp_path):
     assert main([str(tmp_path), "--fail-under", "100"]) == 2
 
 
-def test_scan_recognizes_root_and_nested_agents_overrides(tmp_path):
+def test_legacy_scan_ignores_agents_overrides(tmp_path):
     (tmp_path / "AGENTS.override.md").write_text(
         "Verify with `python -m pytest`.\n", encoding="utf-8"
     )
@@ -103,8 +103,5 @@ def test_scan_recognizes_root_and_nested_agents_overrides(tmp_path):
 
     report = scan(tmp_path)
 
-    assert [item.path for item in report.files] == [
-        "AGENTS.override.md",
-        "nested/AGENTS.override.md",
-    ]
-    assert not any(item.code == "CTX001" for item in report.findings)
+    assert report.files == ()
+    assert [item.code for item in report.findings] == ["CTX001"]
