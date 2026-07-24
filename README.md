@@ -1,11 +1,15 @@
 # Agent Context Lens
 
+**English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
+
 > Lighthouse for the context your coding agents actually consume.
 
 [![CI](https://github.com/ciceroyang/agent-context-lens/actions/workflows/ci.yml/badge.svg)](https://github.com/ciceroyang/agent-context-lens/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-00c2ff)](LICENSE)
 
+<a id="acl-i18n-intro"></a>
+<!-- i18n-source:start:intro -->
 Coding agents quietly accumulate `AGENTS.md`, Claude instructions, editor
 rules, skills, and MCP configuration. That context behaves like a dependency:
 it can grow, conflict, break, or expose secrets without a normal code review.
@@ -15,29 +19,38 @@ deterministic scorecard, and its Codex explain mode reconstructs a declared
 project-instruction chain while keeping modeled uncertainty visible.
 
 ![Real Agent Context Lens self-scan showing a 100/100 score](docs/assets/terminal-preview.svg)
+<!-- i18n-source:end:intro -->
 
+<a id="acl-i18n-quick-start"></a>
+<!-- i18n-source:start:quick-start -->
 ## Quick start
 
 Install the current release directly from GitHub:
 
+<!-- i18n-command:start:QS-01 -->
 ```bash
 python -m pip install "git+https://github.com/ciceroyang/agent-context-lens.git"
 ```
+<!-- i18n-command:end:QS-01 -->
 
 Scan a repository:
 
+<!-- i18n-command:start:QS-02 -->
 ```bash
 agent-context-lens /path/to/repository
 ```
+<!-- i18n-command:end:QS-02 -->
 
 Explain the Codex project instructions for a working directory:
 
+<!-- i18n-command:start:QS-03 -->
 ```bash
 agent-context-lens /path/to/repository \
   --explain --agent codex \
   --cwd /path/to/repository/services/payments \
   --project-root /path/to/repository
 ```
+<!-- i18n-command:end:QS-03 -->
 
 Python 3.10 or later is required. The scan reads only recognized context and MCP
 configuration files. It makes no network requests or model calls.
@@ -45,7 +58,10 @@ configuration files. It makes no network requests or model calls.
 Explain mode is also local and deterministic. It does not run Codex, parse
 Codex TOML, call a model, or inspect user-global instructions unless you pass
 `--include-user`.
+<!-- i18n-source:end:quick-start -->
 
+<a id="acl-i18n-capabilities"></a>
+<!-- i18n-source:start:capabilities -->
 ## Codex context explain
 
 Codex instructions are layered from the project root down to the selected
@@ -99,6 +115,9 @@ agent-context-lens . --explain --agent codex \
   --behavior-profile codex-cli-0.145.0-darwin-arm64
 ```
 
+<!-- i18n-source:end:capabilities -->
+<a id="acl-i18n-limitations"></a>
+<!-- i18n-source:start:limitations -->
 The named profiles are deliberately version- and platform-bound. They do not
 claim whole-prompt parity, future-version behavior, or support on an untested
 operating system.
@@ -125,7 +144,10 @@ standard-library TOML parser, and a partial parser would be unsafe around
 profiles and configuration precedence. If relevant TOML exists but the
 effective values are not declared, the report shows
 `toml_config_not_parsed`.
+<!-- i18n-source:end:limitations -->
 
+<a id="acl-i18n-privacy-safety"></a>
+<!-- i18n-source:start:privacy-safety -->
 ### Privacy and symlinks
 
 - User-global instructions are excluded by default and reported as
@@ -137,7 +159,10 @@ effective values are not declared, the report shows
 - Instruction-file, path-directory, and `CODEX_HOME` symlinks are refused in
   safe mode. Target contents are not read.
 - Reports contain metadata and hashes, not instruction contents.
+<!-- i18n-source:end:privacy-safety -->
 
+<a id="acl-i18n-feedback"></a>
+<!-- i18n-source:start:feedback -->
 ## Who this is for
 
 Use Agent Context Lens when you:
@@ -265,6 +290,7 @@ Runtime code has no third-party dependencies.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for focused changes and verification
 requirements. Report vulnerabilities through the private process in
 [SECURITY.md](SECURITY.md).
+<!-- i18n-source:end:feedback -->
 
 ## License
 
