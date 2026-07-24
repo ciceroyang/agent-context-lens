@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agent-context-lens"
-version = "0.1.0"
-description = "Local, zero-API-key audits for coding-agent context and MCP configuration."
+version = "0.2.0"
+description = "Local context observability for coding-agent instructions and MCP configuration."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
