@@ -6,23 +6,45 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-00c2ff)](LICENSE)
 
-Coding agents quietly accumulate `AGENTS.md` files, skills, Cursor rules, Claude
-instructions, and MCP configuration. More context can mean more cost, more
-conflicts, and a larger security surface.
+Coding agents quietly accumulate `AGENTS.md`, Claude instructions, editor
+rules, skills, and MCP configuration. That context behaves like a dependency:
+it can grow, conflict, break, or expose secrets without a normal code review.
 
-Agent Context Lens gives you a deterministic scorecard before you add another
-prompt or call another model.
+Agent Context Lens maps that dependency locally and gives you a deterministic
+scorecard before you add another prompt or call another model.
 
-```text
-$ agent-context-lens .
+![Real Agent Context Lens self-scan showing a 100/100 score](docs/assets/terminal-preview.svg)
 
-Agent Context Lens
-Score: 92/100
-Context: 4 files · ~2,481 tokens · 8% duplicate instruction lines
-Findings: 0 critical · 1 warnings
+## Quick start
 
-WARNING  VER001 Instructions do not name a concrete verification or test command.
+Install the current release directly from GitHub:
+
+```bash
+python -m pip install "git+https://github.com/ciceroyang/agent-context-lens.git"
 ```
+
+Scan a repository:
+
+```bash
+agent-context-lens /path/to/repository
+```
+
+Python 3.10 or later is required. The scan reads only recognized context and MCP
+configuration files. It makes no network requests or model calls.
+
+## Who this is for
+
+Use Agent Context Lens when you:
+
+- maintain a repository with more than one coding-agent instruction surface;
+- add Cursor, Claude, Copilot, Windsurf, skill, or MCP configuration;
+- want a deterministic context check before CI or code review;
+- need to find duplicate instructions, unsafe MCP configuration, or missing
+  verification guidance.
+
+Run it on a real repository, then
+[share your score or a missing path](https://github.com/ciceroyang/agent-context-lens/discussions/1).
+Please remove secrets, private paths, and proprietary instructions first.
 
 ## Why this exists
 
@@ -35,21 +57,15 @@ WARNING  VER001 Instructions do not name a concrete verification or test command
 - **Security-aware.** It flags likely inline secrets and broad shell modes in MCP
   configuration.
 
-## Install
+## Editable development install
 
-From the repository:
-
-```bash
-python -m pip install -e .
-```
-
-Then scan any project:
+Clone the repository and install the development environment:
 
 ```bash
-agent-context-lens /path/to/repository
+git clone https://github.com/ciceroyang/agent-context-lens.git
+cd agent-context-lens
+python -m pip install -e ".[dev]"
 ```
-
-No account, model, or API key is required.
 
 ## What it scans
 
@@ -125,7 +141,9 @@ one number can measure agent quality.
 - [ ] Tokenizers as optional extras while keeping the default dependency-free
 
 Have a real context failure that this misses? Please open an issue with a minimal
-reproduction. Failure cases will drive the rules.
+reproduction or use the
+[missing context path form](https://github.com/ciceroyang/agent-context-lens/issues/new?template=missing_context_path.yml).
+Failure cases will drive the rules.
 
 ## Development
 
@@ -136,6 +154,10 @@ agent-context-lens . --fail-under 80
 ```
 
 Runtime code has no third-party dependencies.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for focused changes and verification
+requirements. Report vulnerabilities through the private process in
+[SECURITY.md](SECURITY.md).
 
 ## License
 

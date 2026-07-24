@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Share a context score or ask a question
+    url: https://github.com/ciceroyang/agent-context-lens/discussions
+    about: Use Discussions for results, questions, and ideas that are not bugs.
+  - name: Report a vulnerability privately
+    url: https://github.com/ciceroyang/agent-context-lens/security/advisories/new
+    about: Do not publish vulnerabilities or real credentials in an issue.
