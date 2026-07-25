@@ -89,3 +89,19 @@ def test_json_cli_output(tmp_path, capsys):
 
 def test_fail_under_returns_two(tmp_path):
     assert main([str(tmp_path), "--fail-under", "100"]) == 2
+
+
+def test_legacy_scan_ignores_agents_overrides(tmp_path):
+    (tmp_path / "AGENTS.override.md").write_text(
+        "Verify with `python -m pytest`.\n", encoding="utf-8"
+    )
+    nested = tmp_path / "nested"
+    nested.mkdir()
+    (nested / "AGENTS.override.md").write_text(
+        "Nested override.\n", encoding="utf-8"
+    )
+
+    report = scan(tmp_path)
+
+    assert report.files == ()
+    assert [item.code for item in report.findings] == ["CTX001"]

@@ -1,0 +1,25 @@
+{
+  "files": [
+    {
+      "approx_tokens": 9,
+      "bytes": 35,
+      "category": "instructions",
+      "lines": 1,
+      "path": "AGENTS.md",
+      "sha256": "142a7b0578591919bf1dc1cae325e127247c7d7eb70f5f677d6b2479c237abbb"
+    }
+  ],
+  "findings": [],
+  "root": "/repo",
+  "schema_version": 1,
+  "score": 100,
+  "summary": {
+    "critical": 0,
+    "duplicate_line_ratio": 0.0,
+    "files": 1,
+    "notices": 0,
+    "total_approx_tokens": 9,
+    "total_bytes": 35,
+    "warnings": 0
+  }
+}

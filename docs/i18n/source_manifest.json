@@ -1,0 +1,247 @@
+{
+  "schema_version": 3,
+  "contract_id": "I18N-001-LIGHT",
+  "canonical_file": "README.md",
+  "baseline_commit": "e6498fbf7c1b89d368aea7fc42120357ef4bc27a",
+  "baseline_readme": {
+    "bytes": 8926,
+    "lines": 271,
+    "sha256": "c5c3cf854731e067ab88ede40551260932a8ff4423304420c309716343a43188"
+  },
+  "baseline_audit": {
+    "ref": "operations/audits/ACL_V02_FINAL_EVIDENCE_REAUDIT.md",
+    "sha256": "4b7a1a4996ab16cdc1da4d2f40a984172066f476d68117ded5b83ad37b16e846"
+  },
+  "english_patch_proposal_sha256": "e8dabc6dfa0e9f803b035324bdba416095a7583ced36fb37023a0b0d7d9faa57",
+  "integrated_readme": {
+    "bytes": 9844,
+    "lines": 297,
+    "sha256": "701d50014486960d83ad22b89c49f932e67916ecc9daeaa90bcb9e0a8385b2a8"
+  },
+  "product_version": "0.2.0",
+  "human_evidence_required": false,
+  "changed_paths": [
+    ".github/workflows/ci.yml",
+    "README.md",
+    "README.ja.md",
+    "README.zh-CN.md",
+    "docs/i18n/source_manifest.json",
+    "scripts/check_readme_i18n.py",
+    "tests/fixtures/i18n/README.ja.visible.md",
+    "tests/fixtures/i18n/README.zh-CN.visible.md",
+    "tests/fixtures/i18n/mutation_cases.json",
+    "tests/test_readme_i18n.py"
+  ],
+  "locale_files": {
+    "ja": "README.ja.md",
+    "zh-CN": "README.zh-CN.md"
+  },
+  "visible_goldens": {
+    "ja": {
+      "bytes": 4483,
+      "file": "tests/fixtures/i18n/README.ja.visible.md",
+      "lines": 78,
+      "sha256": "ea1048210c7da8b83696c86d62d3b163888191d2327a3ad0a6b4fb68fbb0cda1"
+    },
+    "zh-CN": {
+      "bytes": 2986,
+      "file": "tests/fixtures/i18n/README.zh-CN.visible.md",
+      "lines": 78,
+      "sha256": "801b13f40b640a944f7cf4d7e95afe43374c0b1c4ba30dc1e7ca16468147f2bb"
+    }
+  },
+  "source_block_order": [
+    "intro",
+    "quick-start",
+    "capabilities",
+    "limitations",
+    "privacy-safety",
+    "feedback"
+  ],
+  "source_blocks": {
+    "intro": {
+      "anchor": "acl-i18n-intro",
+      "baseline_end_line": 17,
+      "baseline_sha256": "372f069bc415ae9c46c1d074e7dbea1c3fc3e2e0a5cd9c9f73bb4006559421f9",
+      "baseline_start_line": 9,
+      "integrated_sha256": "372f069bc415ae9c46c1d074e7dbea1c3fc3e2e0a5cd9c9f73bb4006559421f9",
+      "localized_section": "introduction"
+    },
+    "quick-start": {
+      "anchor": "acl-i18n-quick-start",
+      "baseline_end_line": 47,
+      "baseline_sha256": "539072040b5f62945c925ac91367ec3a0a66349122c874298a5717bd78167dfb",
+      "baseline_start_line": 19,
+      "integrated_sha256": "9539b9f39d33414b749ae0553a619d370aa7be7412da2ec7ab02e1276d1ee50f",
+      "localized_section": "quick-start"
+    },
+    "capabilities": {
+      "anchor": "acl-i18n-capabilities",
+      "baseline_end_line": 101,
+      "baseline_sha256": "199e8527036fe57ad3826e9a668c8ac73e469802e6429c886c9c5c941160aba7",
+      "baseline_start_line": 49,
+      "integrated_sha256": "199e8527036fe57ad3826e9a668c8ac73e469802e6429c886c9c5c941160aba7",
+      "localized_section": "capabilities"
+    },
+    "limitations": {
+      "anchor": "acl-i18n-limitations",
+      "baseline_end_line": 127,
+      "baseline_sha256": "8378249895026dbd25a24b782fd69b5e2b74866f167c5534f80042665d2497d8",
+      "baseline_start_line": 102,
+      "integrated_sha256": "8378249895026dbd25a24b782fd69b5e2b74866f167c5534f80042665d2497d8",
+      "localized_section": "limitations"
+    },
+    "privacy-safety": {
+      "anchor": "acl-i18n-privacy-safety",
+      "baseline_end_line": 139,
+      "baseline_sha256": "82f51e037cec3b93e20447adc186fa92e1b461da3e0bd0559965e00fff0feb82",
+      "baseline_start_line": 129,
+      "integrated_sha256": "82f51e037cec3b93e20447adc186fa92e1b461da3e0bd0559965e00fff0feb82",
+      "localized_section": "privacy-safety"
+    },
+    "feedback": {
+      "anchor": "acl-i18n-feedback",
+      "baseline_end_line": 267,
+      "baseline_sha256": "a12d0a498cb68d2583ec0a19cbe926d8629f7221e27b1df8f8ceafe94f30d979",
+      "baseline_start_line": 141,
+      "integrated_sha256": "a12d0a498cb68d2583ec0a19cbe926d8629f7221e27b1df8f8ceafe94f30d979",
+      "localized_section": "feedback"
+    }
+  },
+  "command_order": [
+    "QS-01",
+    "QS-02",
+    "QS-03"
+  ],
+  "protected_tokens": [
+    {
+      "id": "INTRO_PRODUCT",
+      "token": "Agent Context Lens",
+      "section": "intro",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "INTRO_AGENTS",
+      "token": "AGENTS.md",
+      "section": "intro",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "INTRO_CODEX",
+      "token": "Codex",
+      "section": "intro",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "EVIDENCE_OFFICIAL",
+      "token": "official_contract",
+      "section": "capabilities",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "EVIDENCE_VERSIONED",
+      "token": "versioned_observation",
+      "section": "capabilities",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "EVIDENCE_UNKNOWN",
+      "token": "unknown",
+      "section": "capabilities",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "LIMIT_UNKNOWN",
+      "token": "unknown",
+      "section": "limitations",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "LIMIT_CONFIG",
+      "token": ".codex/config.toml",
+      "section": "limitations",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "LIMIT_TOML_REASON",
+      "token": "toml_config_not_parsed",
+      "section": "limitations",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "SAFE_INCLUDE_USER",
+      "token": "--include-user",
+      "section": "privacy-safety",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "SAFE_USER_REASON",
+      "token": "user_scope_not_requested",
+      "section": "privacy-safety",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "SAFE_USER_OVERRIDE",
+      "token": "CODEX_HOME/AGENTS.override.md",
+      "section": "privacy-safety",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "SAFE_USER_AGENTS",
+      "token": "CODEX_HOME/AGENTS.md",
+      "section": "privacy-safety",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "SAFE_CODEX_HOME",
+      "token": "CODEX_HOME",
+      "section": "privacy-safety",
+      "localized_exact_count": 1
+    },
+    {
+      "id": "FEEDBACK_SECURITY",
+      "token": "SECURITY.md",
+      "section": "feedback",
+      "localized_exact_count": 1
+    }
+  ],
+  "required_statement_sha256": {
+    "ja": {
+      "LIMIT-DECLARED": "2427344804085ccc30426863624a19074eaaed0e955f5ab5bed9d2678189c93c",
+      "LIMIT-TOML": "ef16c6a943a41d295836b11544344195034d002414508127bdaebfc84b1a3a24",
+      "SAFE-LOCAL": "553513bc2b108882474aa6396ed33dafa4adf00d5b9f28fc342d7192ef75915f",
+      "SAFE-USER-SCOPE": "fa3a40e4f58d1416e478aed2f4ca7bd0dba86ec9351028ab9ff0004d248ccb0b",
+      "SAFE-SYMLINK": "46be5495f423683fba95e764053b52ddb5337aedcf0fccb4efb8d6e2323707e7",
+      "SAFE-NO-CONTENT": "2e4970d3502e8672e3b4fa2ccac43af70cfae17e7e89a1df4b65101d4e895547",
+      "FEEDBACK-REDACT": "7ccd81306675d255b0e16c27071e51240d7e5c6e4bf3e77333426866f31ed04d"
+    },
+    "zh-CN": {
+      "LIMIT-DECLARED": "e4b988d6887e7353d19e8ff1ef4dc5d03b0668aab51fc2ce56079d287a2b7c49",
+      "LIMIT-TOML": "e11fe2f9de31bd69f1cb2a8e582ed25b177967bc8788e51e8a18fe0edeb532cf",
+      "SAFE-LOCAL": "54564901d231ac3edb9de0a3c82f4ab3ccffc4d7b7aaa1663651c4fa57702f98",
+      "SAFE-USER-SCOPE": "a33da7fe42d83382391ef346ae3a0a42fb7c4e63894e1dceae2275518fdb5663",
+      "SAFE-SYMLINK": "c68294e34589125af457e5e361d0f6dddc60e57aa2881da65792010c1ce10014",
+      "SAFE-NO-CONTENT": "89709b73aa30b495eed34af8380edd2a22d11d83a62721e02c2684b869ce8e4b",
+      "FEEDBACK-REDACT": "6ce2e7f4cc6d9673b224d8787c03466fb21753ab3606c0263d15b87751959b42"
+    }
+  },
+  "required_notice_sha256": {
+    "ja": "7e9dafdb75b57de71958911c76bec0ba71c07b11cc08cb41854118717bf7283b",
+    "zh-CN": "58d0e110b09c1579111f30aaef2f625b443126da40413ad219aa153b7c1c37cd"
+  },
+  "required_external_links": [
+    "https://github.com/ciceroyang/agent-context-lens/discussions/1",
+    "https://github.com/ciceroyang/agent-context-lens/issues/new?template=missing_context_path.yml"
+  ],
+  "forbidden_machine_keys": [
+    "attestation",
+    "reviewer",
+    "qualification_basis",
+    "walkthrough",
+    "native_review",
+    "user_validation",
+    "language_maintainer",
+    "technical_maintainer",
+    "p0_review_sla_days"
+  ]
+}
