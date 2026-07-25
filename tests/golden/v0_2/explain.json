@@ -1,0 +1,149 @@
+{
+  "agent": "codex",
+  "behavior_profile": "official-contract",
+  "codex_version": "unknown",
+  "configuration": {
+    "direct_overrides": [],
+    "fallback_filenames": [],
+    "layers": [
+      {
+        "kind": "cli_override",
+        "status": "not_present"
+      },
+      {
+        "kind": "trusted_project",
+        "status": "not_present"
+      },
+      {
+        "kind": "selected_profile",
+        "status": "not_present"
+      },
+      {
+        "kind": "user",
+        "status": "not_present"
+      },
+      {
+        "kind": "system",
+        "status": "not_present"
+      },
+      {
+        "kind": "defaults",
+        "status": "resolved"
+      }
+    ],
+    "project_doc_max_bytes": 32768,
+    "project_root_markers": [
+      ".git"
+    ],
+    "project_trust": "trusted",
+    "selected_profile": null,
+    "source": "golden_fixture"
+  },
+  "instruction_scopes": [
+    {
+      "reason_codes": [],
+      "scope": "project",
+      "status": "included"
+    },
+    {
+      "reason_codes": [
+        "user_scope_not_requested"
+      ],
+      "scope": "user",
+      "status": "not_requested"
+    }
+  ],
+  "limitations": [],
+  "platform": "darwin-arm64",
+  "report_type": "context_explain",
+  "resolution_status": "resolved",
+  "root": ".",
+  "schema_version": 1,
+  "sources": [
+    {
+      "candidate_kind": "base",
+      "directory": ".",
+      "display_path": "AGENTS.md",
+      "encoding_status": "valid_utf8",
+      "evidence_class": "official_contract",
+      "loaded_bytes": 63,
+      "order": 1,
+      "partial": false,
+      "reason_codes": [
+        "selected_highest_priority"
+      ],
+      "rendered_utf8_bytes": 63,
+      "scope": "project",
+      "separator_bytes_before": 0,
+      "sha256_loaded": "19bb5844d3844787b6d488acd13f8d6ccf01ef81d6dfe677abd7501c166315c3",
+      "sha256_source": "19bb5844d3844787b6d488acd13f8d6ccf01ef81d6dfe677abd7501c166315c3",
+      "source_bytes": 63,
+      "source_id": "project:.:base:AGENTS.md",
+      "state": "active_full"
+    },
+    {
+      "candidate_kind": "base",
+      "directory": "services",
+      "display_path": "services/AGENTS.md",
+      "encoding_status": "valid_utf8",
+      "evidence_class": "official_contract",
+      "loaded_bytes": 54,
+      "order": 2,
+      "partial": false,
+      "reason_codes": [
+        "selected_highest_priority"
+      ],
+      "rendered_utf8_bytes": 54,
+      "scope": "project",
+      "separator_bytes_before": 2,
+      "sha256_loaded": "a181c5c8283641f4541a71b00d70c2bd3ee7fe08cecd74e43c9aa46fa866b2b0",
+      "sha256_source": "a181c5c8283641f4541a71b00d70c2bd3ee7fe08cecd74e43c9aa46fa866b2b0",
+      "source_bytes": 54,
+      "source_id": "project:services:base:AGENTS.md",
+      "state": "active_full"
+    },
+    {
+      "candidate_kind": "override",
+      "directory": "services/payments",
+      "display_path": "services/payments/AGENTS.override.md",
+      "encoding_status": "valid_utf8",
+      "evidence_class": "official_contract",
+      "loaded_bytes": 64,
+      "order": 3,
+      "partial": false,
+      "reason_codes": [
+        "selected_highest_priority"
+      ],
+      "rendered_utf8_bytes": 64,
+      "scope": "project",
+      "separator_bytes_before": 2,
+      "sha256_loaded": "3368f424dc834786ab7d8627f01faa0ff2641607d7103aed4eb97cb146fd6c58",
+      "sha256_source": "3368f424dc834786ab7d8627f01faa0ff2641607d7103aed4eb97cb146fd6c58",
+      "source_bytes": 64,
+      "source_id": "project:services/payments:override:AGENTS.override.md",
+      "state": "active_full"
+    },
+    {
+      "candidate_kind": "base",
+      "directory": "services/payments",
+      "display_path": "services/payments/AGENTS.md",
+      "encoding_status": "valid_utf8",
+      "evidence_class": "official_contract",
+      "loaded_bytes": null,
+      "order": null,
+      "partial": null,
+      "reason_codes": [
+        "shadowed_by_override"
+      ],
+      "rendered_utf8_bytes": null,
+      "scope": "project",
+      "separator_bytes_before": null,
+      "sha256_loaded": null,
+      "sha256_source": "5b2bb87e253c8ff7af18916e3554b57ae6f9e309a90cddcdb3bf6b7aaade763a",
+      "source_bytes": 69,
+      "source_id": "project:services/payments:base:AGENTS.md",
+      "state": "inactive"
+    }
+  ],
+  "working_directory": "services/payments"
+}

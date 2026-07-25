@@ -1,0 +1,4 @@
+Agent Context Lens
+Score: 100/100
+Context: 1 file · ~9 tokens · 0% duplicate instruction lines
+Findings: 0 critical · 0 warnings
