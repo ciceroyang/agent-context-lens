@@ -1,0 +1,56 @@
+name: Bug report
+description: Report incorrect output, a crash, or a reproducible false positive.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a reproducible problem. Remove secrets, private
+        paths, and proprietary instructions before submitting.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output from `agent-context-lens --version`.
+      placeholder: agent-context-lens 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system and Python version.
+      placeholder: macOS 15, Python 3.12
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide a safe repository layout, file snippet, and exact command.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and sanitized output
+      description: Include finding codes and remove all sensitive content.
+      render: text
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed secrets, private paths, and proprietary instructions.
+          required: true

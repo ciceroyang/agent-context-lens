@@ -1,0 +1,40 @@
+Agent Context Lens · explain
+Status: resolved
+Agent: codex
+Project root: .
+Working directory: services/payments
+Platform: darwin-arm64
+Codex version: unknown
+Behavior profile: official-contract
+
+Instruction scopes
+- project: included · reasons=none
+- user: not_requested · reasons=user_scope_not_requested
+
+Sources
+- AGENTS.md · scope=project · kind=base · state=active_full · order=1
+  evidence=official_contract · reasons=selected_highest_priority
+  source_bytes=63 · loaded_bytes=63 · rendered_utf8_bytes=63 · separator_bytes_before=0 · partial=false
+  sha256_source=19bb5844d3844787b6d488acd13f8d6ccf01ef81d6dfe677abd7501c166315c3 · sha256_loaded=19bb5844d3844787b6d488acd13f8d6ccf01ef81d6dfe677abd7501c166315c3 · encoding=valid_utf8
+- services/AGENTS.md · scope=project · kind=base · state=active_full · order=2
+  evidence=official_contract · reasons=selected_highest_priority
+  source_bytes=54 · loaded_bytes=54 · rendered_utf8_bytes=54 · separator_bytes_before=2 · partial=false
+  sha256_source=a181c5c8283641f4541a71b00d70c2bd3ee7fe08cecd74e43c9aa46fa866b2b0 · sha256_loaded=a181c5c8283641f4541a71b00d70c2bd3ee7fe08cecd74e43c9aa46fa866b2b0 · encoding=valid_utf8
+- services/payments/AGENTS.override.md · scope=project · kind=override · state=active_full · order=3
+  evidence=official_contract · reasons=selected_highest_priority
+  source_bytes=64 · loaded_bytes=64 · rendered_utf8_bytes=64 · separator_bytes_before=2 · partial=false
+  sha256_source=3368f424dc834786ab7d8627f01faa0ff2641607d7103aed4eb97cb146fd6c58 · sha256_loaded=3368f424dc834786ab7d8627f01faa0ff2641607d7103aed4eb97cb146fd6c58 · encoding=valid_utf8
+- services/payments/AGENTS.md · scope=project · kind=base · state=inactive · order=unknown
+  evidence=official_contract · reasons=shadowed_by_override
+  source_bytes=69 · loaded_bytes=unknown · rendered_utf8_bytes=unknown · separator_bytes_before=unknown · partial=unknown
+  sha256_source=5b2bb87e253c8ff7af18916e3554b57ae6f9e309a90cddcdb3bf6b7aaade763a · sha256_loaded=unknown · encoding=valid_utf8
+
+Configuration
+- source: golden_fixture
+- project_doc_max_bytes: 32768
+- project_root_markers: .git
+- fallback_filenames: none
+- project_trust: trusted
+
+Limitations
+- none
